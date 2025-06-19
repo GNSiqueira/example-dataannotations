@@ -1,6 +1,6 @@
 using System;
 using System.Reflection;
-using Teste_Data_Annotation.Acoes;
+using AkariBeauty.Objects.Dtos.DataAnnotations.Base;
 using Teste_Data_Annotation.MinhasAcoes; // Importa a base das ações
 
 namespace Teste_Data_Annotation.Processadores
@@ -19,7 +19,7 @@ namespace Teste_Data_Annotation.Processadores
 
                 Console.WriteLine($"\nAnalisando a propriedade '{propriedade}'...");
                 // Para cada propriedade, pega SÓ as anotações que herdam da nossa base 'AcaoAttribute'
-                var acoes = propriedade.GetCustomAttributes<BaseAttribute>(true);
+                var acoes = propriedade.GetCustomAttributes<BaseAnnotation>(true);
 
                 if (!acoes.Any())
                     continue;
@@ -29,7 +29,8 @@ namespace Teste_Data_Annotation.Processadores
                 {
                     Console.WriteLine($"Encontradas {acao.GetType().Name} anotações.");
                     // Executa a ação específica daquela anotação
-                    acao.Executar(propriedade, obj);
+                    acao.Initizlize(propriedade, obj);
+                    acao.Executar();
                 }
             }
         }

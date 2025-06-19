@@ -1,21 +1,22 @@
 using System;
 using System.Reflection;
-using Teste_Data_Annotation.Acoes; // Importando nossa classe base
+using AkariBeauty.Objects.Dtos.DataAnnotations.Base;
 
 namespace Teste_Data_Annotation.MinhasAcoes; 
 
-public class Printar : BaseAttribute
+public class Printar : BaseAnnotation
 {
-    public override void Executar(PropertyInfo propriedade, object objetoPai)
+    public override void Executar()
     {
         // Pega o valor da propriedade no objeto (ex: o valor de 'Id' no objeto 'teste')
-        object? valorDaPropriedade = propriedade.GetValue(objetoPai);
-
-        propriedade.SetValue(objetoPai, 8888);
         
+
         Console.WriteLine("--- Ação [Printar] Executada ---");
-        Console.WriteLine($"Propriedade: {propriedade.Name}");
-        Console.WriteLine($"Valor da Propriedade: {valorDaPropriedade}");
+        Console.WriteLine($"Propriedade: {Value}");
+
+        Console.WriteLine($"Depois da alteração");
+        Value = 999;
+        Console.WriteLine($"Propriedade: {Value}");
         Console.WriteLine("---------------------------------");
     }
 }
