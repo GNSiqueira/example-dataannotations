@@ -4,12 +4,17 @@ using AkariBeauty.Objects.Dtos.DataAnnotations.Base;
 
 namespace Teste_Data_Annotation.MinhasAcoes; 
 
-public class Printar : BaseAnnotation
+public class PrintarAttribute : BaseAnnotation
 {
-    public override void Executar()
+
+
+    public override void Execute()
     {
-        // Pega o valor da propriedade no objeto (ex: o valor de 'Id' no objeto 'teste')
-        
+        if (Parameters != null && Parameters.Any()) 
+            foreach (var item in Parameters)
+            {
+                Console.WriteLine(item);
+            }
 
         Console.WriteLine("--- Ação [Printar] Executada ---");
         Console.WriteLine($"Propriedade: {Value}");

@@ -1,37 +1,31 @@
-using System;
 using System.Reflection;
 using AkariBeauty.Objects.Dtos.DataAnnotations.Base;
-using Teste_Data_Annotation.MinhasAcoes; // Importa a base das ações
 
 namespace Teste_Data_Annotation.Processadores
 {
     public static class ProcessadorDeAcoes
     {
-        public static void ExecutarAcoes(object obj)
+        public static void Executar(object obj)
         {
-            Console.WriteLine($"\nProcessando ações para o objeto do tipo '{obj.GetType().Name}'...");
+            var properties = obj.GetType().GetProperties();
 
-            // Pega todas as propriedades do objeto
-            var propriedades = obj.GetType().GetProperties();
+            if (!properties.Any())
+                return;
 
-            foreach (var propriedade in propriedades)
+            foreach (var property in properties)
             {
+                var executions = property.GetCustomAttributes<BaseAnnotation>(true);
 
-                Console.WriteLine($"\nAnalisando a propriedade '{propriedade}'...");
-                // Para cada propriedade, pega SÓ as anotações que herdam da nossa base 'AcaoAttribute'
-                var acoes = propriedade.GetCustomAttributes<BaseAnnotation>(true);
 
-                if (!acoes.Any())
+                if (!executions.Any())
                     continue;
 
-                // Itera sobre cada anotação de ação encontrada (ex: [Printar])
-                foreach (var acao in acoes)
+                foreach (var action in executions)
                 {
-                    Console.WriteLine($"Encontradas {acao.GetType().Name} anotações.");
-                    // Executa a ação específica daquela anotação
-                    acao.Initizlize(propriedade, obj);
-                    acao.Executar();
+                    action.Initialize(property, obj);
+                    action.Execute();
                 }
+
             }
         }
     }
